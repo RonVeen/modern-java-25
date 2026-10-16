@@ -40,7 +40,15 @@ java -version
 mvn test
 ```
 
-The tests should pass. Two exercise test classes are initially disabled and will be enabled later.
+The tests should pass. Two exercise test classes in the **starter project** are
+initially disabled and will be enabled later:
+
+- `code/starter/src/test/java/workshop/concurrency/StructuredConcurrencyExerciseTest.java`
+- `code/starter/src/test/java/workshop/concurrency/ScopedValueExerciseTest.java`
+
+The solution project contains enabled, expanded versions under the same class
+names. Make sure you opened `code/starter`, rather than only `code/solution`,
+when following the exercises.
 
 Run the application:
 
@@ -169,7 +177,9 @@ catch (StructuredTaskScope.TimeoutException exception) {
 
 ### 5. Enable the exercise tests
 
-Remove `@Disabled` from `StructuredConcurrencyExerciseTest`, then run:
+Open
+`src/test/java/workshop/concurrency/StructuredConcurrencyExerciseTest.java`,
+remove `@Disabled`, then run:
 
 ```shell
 mvn -Dtest=StructuredConcurrencyExerciseTest test
@@ -225,7 +235,9 @@ public static <T, X extends Throwable> T callWith(
 }
 ```
 
-Remove `@Disabled` from `ScopedValueExerciseTest` and run it. It verifies that the value exists inside the operation but not before or after it.
+Open `src/test/java/workshop/concurrency/ScopedValueExerciseTest.java`, remove
+`@Disabled`, and run it. It verifies that the value exists inside the operation
+but not before or after it.
 
 ```shell
 mvn -Dtest=ScopedValueExerciseTest test
@@ -269,7 +281,9 @@ Run at least 100 quote requests on virtual threads. For every `ServiceProbe.Even
 event.requestId().equals(event.contextRequestId())
 ```
 
-Also verify that `RequestContexts.current()` throws outside a bound operation. Compare your work with `ScopedValueIsolationTest` in the completed solution.
+Also verify that `RequestContexts.current()` throws outside a bound operation.
+Compare your work with the enabled `ScopedValueExerciseTest` in the completed
+solution.
 
 ### Questions
 
