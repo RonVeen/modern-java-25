@@ -11,7 +11,7 @@ public final class PricingService {
 
     public PricingResult price(QuoteRequest request) throws InterruptedException {
         var context = RequestContexts.current();
-        probe.record("pricing", request, ServiceProbe.Outcome.STARTED);
+        probe.record("pricing", request, context, ServiceProbe.Outcome.STARTED);
         try {
             Thread.sleep(timings.pricing());
             var basePrice = 1_000L + request.weightKg() * 75L;
@@ -19,12 +19,11 @@ public final class PricingService {
                     ? basePrice / 10
                     : 0L;
             var result = new PricingResult(basePrice, discount);
-            probe.record("pricing", request, ServiceProbe.Outcome.COMPLETED);
+            probe.record("pricing", request, context, ServiceProbe.Outcome.COMPLETED);
             return result;
         } catch (InterruptedException exception) {
-            probe.record("pricing", request, ServiceProbe.Outcome.INTERRUPTED);
+            probe.record("pricing", request, context, ServiceProbe.Outcome.INTERRUPTED);
             throw exception;
         }
     }
 }
-

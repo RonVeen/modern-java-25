@@ -10,7 +10,8 @@ public final class CustomsService {
     }
 
     public CustomsResult check(QuoteRequest request) throws InterruptedException {
-        probe.record("customs", request, ServiceProbe.Outcome.STARTED);
+        var context = RequestContexts.current();
+        probe.record("customs", request, context, ServiceProbe.Outcome.STARTED);
         try {
             var delay = request.scenario() == Scenario.SLOW_CUSTOMS
                     ? timings.slowCustoms()
@@ -18,7 +19,7 @@ public final class CustomsService {
             Thread.sleep(delay);
 
             if (request.scenario() == Scenario.CUSTOMS_FAILURE) {
-                probe.record("customs", request, ServiceProbe.Outcome.FAILED);
+                probe.record("customs", request, context, ServiceProbe.Outcome.FAILED);
                 throw new CustomsRejectedException(request.requestId());
             }
 
@@ -26,12 +27,11 @@ public final class CustomsService {
             var result = required
                     ? new CustomsResult(true, 1_500, "CLEARED")
                     : new CustomsResult(false, 0, "NOT_REQUIRED");
-            probe.record("customs", request, ServiceProbe.Outcome.COMPLETED);
+            probe.record("customs", request, context, ServiceProbe.Outcome.COMPLETED);
             return result;
         } catch (InterruptedException exception) {
-            probe.record("customs", request, ServiceProbe.Outcome.INTERRUPTED);
+            probe.record("customs", request, context, ServiceProbe.Outcome.INTERRUPTED);
             throw exception;
         }
     }
 }
-

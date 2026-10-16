@@ -22,8 +22,11 @@ public final class ServiceProbe {
 
     private final ConcurrentLinkedQueue<Event> events = new ConcurrentLinkedQueue<>();
 
-    public void record(String service, QuoteRequest request, Outcome outcome) {
-        var context = RequestContexts.current();
+    public void record(
+            String service,
+            QuoteRequest request,
+            RequestContext context,
+            Outcome outcome) {
         var thread = Thread.currentThread();
         events.add(new Event(
                 service,
@@ -42,4 +45,3 @@ public final class ServiceProbe {
         events.clear();
     }
 }
-
