@@ -1,7 +1,7 @@
 package workshop.delivery.domain;
 
-// TODO LAB 2: Close this domain with sealed and permits.
-public interface Shipment {
+public sealed interface Shipment
+        permits Letter, Parcel, ColdChainParcel, FragileParcel {
     String trackingId();
 
     Address destination();

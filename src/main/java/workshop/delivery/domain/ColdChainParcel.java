@@ -9,7 +9,6 @@ public final class ColdChainParcel extends DeliveryItem implements Shipment {
     private final int minTemperatureC;
     private final int maxTemperatureC;
 
-    // TODO LAB 4: Validate and normalize in a prologue before super(...).
     public ColdChainParcel(
             String trackingId,
             Address destination,
@@ -17,13 +16,19 @@ public final class ColdChainParcel extends DeliveryItem implements Shipment {
             Weight weight,
             int minTemperatureC,
             int maxTemperatureC) {
-        super(TrackingIds.normalize(trackingId));
+        var normalizedTrackingId = TrackingIds.normalize(trackingId);
+        Objects.requireNonNull(destination, "destination");
+        Objects.requireNonNull(dimensions, "dimensions");
+        Objects.requireNonNull(weight, "weight");
         if (minTemperatureC >= maxTemperatureC) {
             throw new IllegalArgumentException("Minimum temperature must be below maximum");
         }
-        this.destination = Objects.requireNonNull(destination, "destination");
-        this.dimensions = Objects.requireNonNull(dimensions, "dimensions");
-        this.weight = Objects.requireNonNull(weight, "weight");
+
+        super(normalizedTrackingId);
+
+        this.destination = destination;
+        this.dimensions = dimensions;
+        this.weight = weight;
         this.minTemperatureC = minTemperatureC;
         this.maxTemperatureC = maxTemperatureC;
     }

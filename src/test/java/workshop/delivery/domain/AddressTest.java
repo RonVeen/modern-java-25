@@ -4,13 +4,15 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AddressTest {
     @Test
-    void behavesLikeAnImmutableValue() {
+    void isAValidatedValueRecord() {
         var first = new Address(" nl ", " Amsterdam ", " 1012 JS ");
         var second = new Address("NL", "Amsterdam", "1012 JS");
 
+        assertTrue(Address.class.isRecord());
         assertEquals(first, second);
         assertEquals("NL", first.country());
         assertEquals("Amsterdam", first.city());

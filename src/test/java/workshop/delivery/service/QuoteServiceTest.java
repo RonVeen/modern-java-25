@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import workshop.delivery.domain.Address;
 import workshop.delivery.domain.ColdChainParcel;
 import workshop.delivery.domain.Dimensions;
+import workshop.delivery.domain.FragileParcel;
 import workshop.delivery.domain.Letter;
 import workshop.delivery.domain.Parcel;
 import workshop.delivery.domain.Weight;
@@ -44,6 +45,21 @@ class QuoteServiceTest {
         assertEquals("Oversized parcel", service.quote(oversized, "STANDARD").description());
         assertEquals(1_600, service.quote(oversized, "STANDARD").priceInCents());
         assertEquals(2_100, service.quote(cold, "STANDARD").priceInCents());
+    }
+
+    @Test
+    void extendingTheDomainForcesTheSwitchToGrow() {
+        var fragile = new FragileParcel(
+                "fragile-1",
+                destination,
+                new Dimensions(10, 10, 10),
+                new Weight(1_000),
+                "Keep upright");
+
+        var quote = service.quote(fragile, "STANDARD");
+
+        assertEquals(1_250, quote.priceInCents());
+        assertEquals("Fragile parcel: Keep upright", quote.description());
     }
 }
 

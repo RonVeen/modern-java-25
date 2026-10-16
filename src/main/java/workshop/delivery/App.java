@@ -2,6 +2,7 @@ package workshop.delivery;
 
 import workshop.delivery.domain.Address;
 import workshop.delivery.domain.Dimensions;
+import workshop.delivery.domain.FragileParcel;
 import workshop.delivery.domain.Letter;
 import workshop.delivery.domain.Parcel;
 import workshop.delivery.domain.Shipment;
@@ -19,7 +20,13 @@ public final class App {
                         "parcel-21",
                         amsterdam,
                         new Dimensions(40, 30, 20),
-                        new Weight(2_000)));
+                        new Weight(2_000)),
+                new FragileParcel(
+                        "fragile-25",
+                        amsterdam,
+                        new Dimensions(30, 20, 20),
+                        new Weight(1_200),
+                        "Keep upright"));
 
         var quoteService = new QuoteService();
         shipments.stream()
